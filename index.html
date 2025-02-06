@@ -22,19 +22,25 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            max-width: 800px; /* 限制最大宽度，确保内容在大屏幕上不会过于宽广 */
+            max-width: 800px; /* 限制最大宽度 */
             margin: 20px;
+            transition: all 0.5s ease;
         }
         h1 {
             color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
         p {
             color: #666;
             line-height: 1.6;
+            font-size: 1.2em;
+            margin-bottom: 15px;
         }
         .wish {
             font-size: 24px;
             color: #ff69b4;
+            margin-bottom: 20px;
             animation: fadeIn 2s ease-in-out;
         }
         @keyframes fadeIn {
@@ -53,6 +59,7 @@
             height: 200px;
             background-image: url('https://example.com/birthday-cake.png'); /* 替换为实际的生日蛋糕图片链接 */
             background-size: cover;
+            background-position: center;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -112,15 +119,39 @@
             left: 80%;
             animation-delay: 4s;
         }
+        /* 倒计时样式 */
+        .countdown {
+            font-size: 24px;
+            color: #ff69b4;
+            margin-top: 20px;
+        }
+        .countdown span {
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        /* 隐藏元素的通用样式 */
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>亲爱的姐姐，生日快乐！</h1>
-        <p>2月7日是你的生日，虽然身处异国他乡，但咱爸咱妈还有我一直都思念你，为你加油</p>
-        <p>姐姐，你在异国他乡努力学习、勇敢探索，十分厉害。希望你在这一年里，所有的愿望都能实现，继续追逐自己的梦想，勇敢探索，不断突破</p>
-        <p>在国外的日子里，希望你能够照顾好自己，保持积极乐观的心态，结交更多志同道合的朋友，体验不同文化的魅力。无论遇到什么困难和挑战，都要相信自己</p>
-        <p class="wish">姐姐，生日快乐！愿你一年充满希望与美好，愿你在生活上，一路顺风；愿你永远18岁；永远开开心心。我们大家永远支持你，永远爱你！</p>
+        <!-- 倒计时部分 -->
+        <div class="countdown" id="countdown">
+            <span id="days">00</span>天
+            <span id="hours">00</span>小时
+            <span id="minutes">00</span>分
+            <span id="seconds">00</span>秒
+        </div>
+        <!-- 祝福语部分 -->
+        <div class="birthday-wishes hidden" id="birthday-wishes">
+            <h1>亲爱的姐姐，生日快乐！</h1>
+            <p>2月7日是你的生日，虽然身处异国他乡，但咱爸咱妈还有我一直都思念你，为你加油。</p>
+            <p>姐姐，你在异国他乡努力学习、勇敢探索，十分厉害。希望你在这一年里，所有的愿望都能实现，继续追逐自己的梦想，勇敢探索，不断突破。</p>
+            <p>在国外的日子里，希望你能够照顾好自己，保持积极乐观的心态，结交更多志同道合的朋友，体验不同文化的魅力。无论遇到什么困难和挑战，都要相信自己。</p>
+            <p class="wish">姐姐，生日快乐！愿你一年充满希望与美好，愿你在生活上，一路顺风；愿你永远18岁；永远开开心心。我们大家永远支持你，永远爱你！</p>
+        </div>
     </div>
     <!-- 生日蛋糕 -->
     <div class="cake"></div>
@@ -130,5 +161,44 @@
     <div class="firework"></div>
     <div class="firework"></div>
     <div class="firework"></div>
+
+    <script>
+        // 设置倒计时目标日期（姐姐的生日）
+        const targetDate = new Date('2025-02-07T00:00:00').getTime();
+
+        // 获取页面元素
+        const countdownElement = document.getElementById('countdown');
+        const birthdayWishesElement = document.getElementById('birthday-wishes');
+
+        // 更新倒计时的函数
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance > 0) {
+                // 计算天、时、分、秒
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // 更新页面上的倒计时
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                // 倒计时结束，隐藏倒计时，显示祝福语
+                countdownElement.classList.add('hidden');
+                birthdayWishesElement.classList.remove('hidden');
+            }
+        }
+
+        // 每秒更新一次倒计时
+        setInterval(updateCountdown, 1000);
+
+        // 初始化倒计时
+        updateCountdown();
+    </script>
 </body>
 </html>
